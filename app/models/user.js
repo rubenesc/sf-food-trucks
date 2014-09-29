@@ -9,12 +9,6 @@
       _ = require('underscore'),
       AppError = require("../helpers/appError");
 
-    var oAuthTypes = [
-      'twitter',
-      'facebook',
-      'google'
-    ];      
-
     var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/;
 
     //Example: john.doe, only letters, numbers and dots. no spaces, or anything else. Its very simple
@@ -95,25 +89,6 @@
       } 
 
     });
-
-
-
-      // UserSchema.pre("save",function(next, done) {
-      //     var self = this;
-      //     mongoose.models["User"].findOne({username : self.username},function(err, user) {
-      //         if(err) {
-      //             done(err);
-      //         } else if(user) {
-      //             self.invalidate("username","username must be unique");
-      //             done(new AppError("username must be unique"));
-      //         } else {
-      //             done();
-      //         }
-      //     });
-      //     next();
-      // });
-
-
 
 /**
  * Methods
