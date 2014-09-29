@@ -1,0 +1,47 @@
+
+var config =  {
+
+    development: {
+
+      root: require('path').normalize(__dirname + '/..'),
+
+      app: {
+        name: 'Food Trucks: Development'
+      },
+
+      db: 'mongodb://localhost/db_food_trucks_dev',
+
+      sessionSecret: 'this_is_a_secret_key'
+
+    }, 
+
+    test: {
+
+      root: require('path').normalize(__dirname + '/..'),
+      
+      app: {
+        name: 'Food Trucks: Testing'
+      },
+
+      db: 'mongodb://localhost/db_food_trucks_test',
+
+      sessionSecret: 'this_is_a_secret_key'
+
+    }, 
+
+    production: {
+
+      root: require('path').normalize(__dirname + '/..'),
+
+      app: {
+        name: 'Food Trucks'
+      },
+
+      db: 'mongodb://localhost/db_food_trucks_prd',
+            
+      sessionSecret: 'this_is_a_secret_key'
+      
+    }
+}
+
+module.exports = config[process.env.NODE_ENV || 'development'];
