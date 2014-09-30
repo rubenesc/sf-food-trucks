@@ -20,8 +20,8 @@ describe("Trucks", function(){
 				type: "Truck",
 				foodItems: "Cold Truck: Burrito: Corn Dog: Salads: Sandwiches: Quesadilla: Tacos: Fried Rice: Cow Mein: Chinese Rice: Noodle Plates: Soup: Bacon: Eggs: Ham: Avacado: Sausages: Beverages",
 				address: "1199 ORTEGA ST",
-				longitude: "-122.4900712081",
-				latitude: "-37.7835091222127",
+				lng: "-122.4900712081",
+				lat: "-37.7835091222127",
 				block: "1404"
 			});
 
@@ -92,8 +92,8 @@ describe("Trucks", function(){
 				data1.type =  data1.type + " updated 2";
 				data1.foodItems =  data1.foodItems + ": updated 3";
 				data1.address =  data1.address + " updated 4";
-				data1.latitude =  "37.791350";
-				data1.longitude =  "-122.435883";
+				data1.lat =  "37.791350";
+				data1.lng =  "-122.435883";
 
 				data1.save(function(err2, data2){
 
@@ -107,8 +107,8 @@ describe("Trucks", function(){
 					data2.type.should.equal(data1.type);
 					data2.foodItems.should.equal(data1.foodItems);
 					data2.address.should.equal(data1.address);
-					data2.latitude.should.equal(data1.latitude);
-					data2.longitude.should.equal(data1.longitude);
+					data2.lat.should.equal(data1.lat);
+					data2.lng.should.equal(data1.lng);
 
 					done();
 
@@ -127,8 +127,8 @@ describe("Trucks", function(){
 				type: "Truck",
 				foodItems: "Cold Truck: Burrito: Corn Dog: Salads: Sandwiches: Quesadilla: Tacos: Fried Rice: Cow Mein: Chinese Rice: Noodle Plates: Soup: Bacon: Eggs: Ham: Avacado: Sausages: Beverages",
 				address: "1199 ORTEGA ST",
-				longitude: "-122.4900712081",
-				latitude: "-37.7835091222127",
+				lng: "-122.4900712081",
+				lat: "-37.7835091222127",
 				block: "1404"
 			});
 

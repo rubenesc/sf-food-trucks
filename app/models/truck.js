@@ -43,8 +43,8 @@ var TruckSchema = new Schema({
 	type: {type:String, trim:true},
 	foodItems: {type:String, trim:true},
 	address: {type:String, trim:true},
-	longitude: {type:String, trim:true},
-	latitude: {type:String, trim:true},
+	lng: {type:Number},
+	lat: {type:Number},
 	block: {type:String, trim:true},
     createdDate  : {type : Date, default : Date.now},
     modifiedDate  : {type : Date}
