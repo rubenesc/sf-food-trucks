@@ -1,0 +1,23 @@
+
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.full-height{
+	height: 100%;
+}
+
+#map-canvas {
+  height: 100%;
+}
+
+.bs-alert-message{
+	margin: 20px;
+} 
