@@ -1,5 +1,7 @@
 
 
+//from https://mattsurabian.github.io/requirejs-projects-and-asynchronously-loading-the-google-maps-api/
+
 var google_maps_loaded_def = null;
  
 define(['jquery'],function($) {
