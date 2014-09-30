@@ -27,8 +27,8 @@ exports.fetchListFromAPI = function(req, res, next) {
 					type: item.facilitytype, 
 					foodItems: item.fooditems, 
 					address: item.address, 
-					longitude: item.longitude, 
-					latitude: item.latitude, 
+					lng: item.longitude, 
+					lat: item.latitude, 
 					block: item.block 
 				}));
 
