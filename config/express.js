@@ -154,7 +154,7 @@ module.exports = function(app, config, passport) {
     // assume 404 since no middleware responded
     app.use(function(req, res, next) {
 
-      var isApi = false;
+      var isApi = true;
 
       if (isApi) {
         res.send('404', {

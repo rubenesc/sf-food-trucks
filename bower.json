@@ -1,6 +1,11 @@
 {
   "name": "food-trucks",
   "version": "1.0.0",
+  "scripts": {
+    "start": "NODE_ENV=production node app.js",
+    "test": "NODE_ENV=test ./bin/test",
+    "devserver": "NODE_ENV=development ./node_modules/node-dev/node-dev --debug app.js"
+  },
   "dependencies": {
     "requirejs": "~2.1.4",
     "modernizr": "~2.6.2",
