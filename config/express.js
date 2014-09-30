@@ -42,6 +42,7 @@ module.exports = function(app, config, passport) {
     //handlebars
     var hbs = require('./middleware/handlebars/hbs-helper')();
     app.engine('handlebars', hbs.engine);
+    
     //app.set('views', config.root + '/app/views');
     app.set('view engine', 'handlebars');
 

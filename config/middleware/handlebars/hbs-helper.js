@@ -13,9 +13,12 @@ module.exports = function () {
 
     // set views path, template engine and default layout
     var hbs = exphbs.create({
+
        defaultLayout: 'main',
+
         // Specify helpers which are only registered on this instance.
         helpers: {
+
           ifCond: function(v1, v2, options) {
 
               if(v1 === v2) {
@@ -61,8 +64,8 @@ module.exports = function () {
             
           }
 
-
         }
+        
     });
 
 	return hbs;
