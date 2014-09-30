@@ -64,7 +64,8 @@ function(BaseView, TrucksCol, TruckModel, MapManager) {
 				    lat: truck.get("lat"),
 				    lng: truck.get("lng"),
 				    icon: icon,
-				    content: truck.get("name")
+				    content: truck.get("name"),
+				    truckId: truck.get("truckId")
 				  });		  	
 			}
 

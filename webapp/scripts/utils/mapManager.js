@@ -1,4 +1,4 @@
-define(['utils/googleMapsLoader'],
+define(['utils/googleMapsLoader', 'utils/markerClusterer'],
 
 function(GoogleMapsLoader) {
 
@@ -11,6 +11,9 @@ function(GoogleMapsLoader) {
       this.markers = []; //keep track of created markers
       this.markersMap = {}; //keep track of created markers
 
+      //create a marker cluster to group truck markers
+      this.markerClusterer = new MarkerClusterer(this.gMap, this.markers);
+      
     }
 
     MapManager.prototype = {
@@ -27,6 +30,11 @@ function(GoogleMapsLoader) {
         //create the marker
         var marker = new google.maps.Marker(opts);
         this.markers.push(marker);
+
+        //if it is a truck add it to the cluster
+        if (opts.truckId){
+          this.markerClusterer.addMarker(marker);
+        }
 
         //if content is denfiend, then attach an info window.
         if (opts.content) {
