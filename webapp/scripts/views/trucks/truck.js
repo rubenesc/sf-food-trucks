@@ -25,7 +25,7 @@ define(['baseView', 'text!templates/trucks/truck-list-item.html'],
   	},
 
   	clickItem: function(){
-
+      vent.trigger("truck:locateMarkerOnMap", this.model);
   	},
 
   	unrender: function(){

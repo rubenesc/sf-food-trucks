@@ -7,9 +7,14 @@ function(BaseView, TrucksView, TrucksCol, TruckModel, MapManager) {
 
 	el: '.container',
 
+	map: null,
+
 	trucksView: null,
 
     initialize: function() {
+
+		vent.on("truck:locateMarkerOnMap", this.locateMarkerOnMap, this);    	
+		vent.on("truck:locateMarkerOnList", this.locateMarkerOnList, this);    	
 
     	this.createMapAndInitalizeData();
 
@@ -77,6 +82,23 @@ function(BaseView, TrucksView, TrucksCol, TruckModel, MapManager) {
 
 		});
 
+  	}, 
+
+  	locateMarkerOnMap: function(item){
+
+  		var found = map.findMarkersBy(function(marker){
+  			return marker.truckId === item.get("truckId");
+  		});
+
+  		found.forEach(function(item){
+  			map.displayInfoWindow(item);
+			map.setCenter(item.get("lat"), item.get("lng"));
+			map.zoom(17);
+  		});
+  	}, 
+
+  	locateMarkerOnList: function(item){
+  		document.getElementById("truck-"+item.get("truckId")).focus();
   	}
 
   });
