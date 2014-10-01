@@ -67,13 +67,14 @@ function(BaseView, TrucksView, TrucksCol, TruckModel, MapManager) {
 		// add a marker to the map for every truck
 		this.collection.forEach(function(truck){
 
-			if (truck.get("lat") && truck.get("lng")){
+
+			if (truck.get("loc") && truck.get("loc").coordinates && truck.get("loc").coordinates.length === 2){
 
 				var icon = (truck.get("type") === 'Push Cart') ? 'images/pushcart.png' : 'images/truck.png';
 				
 				map.createMarker({
-				    lat: truck.get("lat"),
-				    lng: truck.get("lng"),
+				    lng: truck.get("loc").coordinates[0],
+				    lat: truck.get("loc").coordinates[1],
 				    icon: icon,
 				    content: truck.get("name"),
 				    truckId: truck.get("truckId")
@@ -99,6 +100,11 @@ function(BaseView, TrucksView, TrucksCol, TruckModel, MapManager) {
 
   	locateMarkerOnList: function(item){
   		document.getElementById("truck-"+item.get("truckId")).focus();
+
+      	var lng = item.get("lng");
+    	var lat = item.get("lat");
+    	console.log("["+lng+"]["+lat+"]");
+
   	}
 
   });

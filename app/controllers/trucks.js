@@ -27,16 +27,17 @@ exports.fetchListFromAPI = function(req, res, next) {
 					type: item.facilitytype, 
 					foodItems: item.fooditems, 
 					address: item.address, 
-					lng: item.longitude, 
-					lat: item.latitude, 
-					block: item.block 
+					block: item.block,
+				    loc: {
+				      type: 'Point',
+				      coordinates: [ parseFloat(item.longitude), parseFloat(item.latitude) ]
+				    }
 				}));
 
 		});
 
  		Truck.create(models, function(err){
 
-			//if error is a unique index constraint ignore it.
 			if (err && !err.code && !err.code===11000){
 				return res.send(400, {errors: err} );
 			}
@@ -83,12 +84,26 @@ function retrieveListOptions(req){
 	//conditionally add members to object
 	var criteria = {};
 
-	if (req.body.type) criteria.type = req.body.type;
-	if (req.body.food) criteria.food = req.body.food;
-	if (req.body.lat && req.body.lon){
-		criteria.lat = req.body.lat;	
-		criteria.lon = req.body.lon;	
-	} 
+	if (req.param('type')){
+		criteria.type = req.param('type');		
+	}
+
+	if (req.param('food')){
+		criteria.foodItems = req.param('food');		
+	}	
+
+	if (req.param('truckId')){
+		criteria.truckId = req.param('truckId');		
+	}	
+
+	if (req.param('name')){
+		criteria.name = req.param('name');		
+	}	
+
+	if (req.param('lat') && req.param('lon')){
+		criteria.lat = req.param('lat');		
+		criteria.lon = req.param('lon');		
+	}	
 
 	return {
 		criteria: criteria,

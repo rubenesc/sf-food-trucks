@@ -13,6 +13,10 @@ function(GoogleMapsLoader) {
 
       //create a marker cluster to group truck markers
       this.markerClusterer = new MarkerClusterer(this.gMap, []);
+
+      google.maps.event.addListener(this.gMap, "click", function(e){
+        console.log(e);
+      });
       
     }
 

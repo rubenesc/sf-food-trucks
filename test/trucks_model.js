@@ -3,6 +3,7 @@ var assert = require('assert');
 var should = require('should');
 var mongoose = require('mongoose');
 var Truck = mongoose.model('Truck');
+var DistanceHelper = require("../app/helpers/distanceHelper");
 
 
 describe("Trucks", function(){
@@ -16,7 +17,7 @@ describe("Trucks", function(){
 			//setup test model
 			truck = new Truck({
 				truckId: "123456", 
-				name: "Eva's Catering",
+				name: "Eva's Catering Test",
 				type: "Truck",
 				foodItems: "Cold Truck: Burrito: Corn Dog: Salads: Sandwiches: Quesadilla: Tacos: Fried Rice: Cow Mein: Chinese Rice: Noodle Plates: Soup: Bacon: Eggs: Ham: Avacado: Sausages: Beverages",
 				address: "1199 ORTEGA ST",
@@ -25,13 +26,7 @@ describe("Trucks", function(){
 				block: "1404"
 			});
 
-			// Cleanup DB.
-			Truck.remove(function(err) {
-				
-				if(err) return done(err);
-				
-				done();
-			});
+			done();
 
 		});
 
@@ -147,50 +142,75 @@ describe("Trucks", function(){
 
 		});
 
+		it("find a truck near", function(done){
+
+			// Divs & Fulton
+			var coords = [-122.43822813034058, 37.77687154550712];
+
+			Truck.find({ loc: {
+					$nearSphere: coords,
+					$maxDistance: 0.01
+				} },
+
+				function(err, data){
+
+					if (err) return done(err);
+
+					data.forEach(function(item){
+						printItem(item, coords);
+					});
+
+					done();
+					
+				}
+			);
+
+		});
+
+
+		function printItem(item, coords){
+
+			var d = -1;
+
+			if (item.loc.coordinates.length === 2){
+
+				var lat1 = coords[1];
+				var lon1 = coords[0];
+				var lat2 = item.loc.coordinates[1];
+				var lon2 = item.loc.coordinates[0];
+
+				d = DistanceHelper.getDistanceInKm(lat1, lon1, lat2, lon2);
+			}
+
+			return console.log("["+item.truckId+"]["+item.name+"]["+d+"]"); 
+		}
 
 
 
+		// it("find truck based on food item", function(done){
+
+		// 	Truck.find(
+		// 		{ $text : { $search : 'Burrito' } }
+
+		// 	  ).exec(function(err, data) {
+
+		// 	  	if (err) return done(err);
+
+		// 	  	console.dir(data);
 
 
+		// 	    // assert.ifError(error);
+		// 	    // assert.equal(2, documents.length);
+		// 	    // assert.equal('text search in mongoose', documents[0].title);
+		// 	    // assert.equal('searching in mongoose', documents[1].title);
+		// 	    // db.close();
+		// 	    done();
 
+		// 	  });
 
+		// });
 
-
-		// it("should not create a duplicate truck id", function(done){
-
-		// 		truck.save(function(err, data){
-
-		// 		if(err) return done(err);
-
-		// 		data.should.have.be.a('object');
-		// 		data.should.have.property('_id');
-		// 		done();
-
-		// 	});			
-
-		// });	
 
 	});
-
-	// describe("load data from API", function(){
-
-	// 	var result = {};
-	// 	before(function(){
-	// 	});
-
-	// 	it("is successful", function(){
-	// 	});
-
-	// });
-
-
-
-	// it("find truck by id", function(){
-
-	// });
-
-	// it("find truck by location", function(){
-
-	// });
 
 });
