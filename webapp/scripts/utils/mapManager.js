@@ -66,6 +66,11 @@ function(GoogleMapsLoader) {
         }
       },
 
+      setCenter: function(lat, lon){
+        this.gMap.setCenter(new google.maps.LatLng(lat,lon));
+        this.gMap.setZoom(15);
+      }
+
     };
 
     return MapManager;

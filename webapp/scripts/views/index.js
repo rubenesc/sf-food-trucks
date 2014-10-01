@@ -1,11 +1,13 @@
 
-define(['baseView', 'collections/trucks', 'models/truck', 'utils/MapManager'],
+define(['baseView', 'views/trucks/trucks', 'collections/trucks', 'models/truck', 'utils/MapManager'],
 
-function(BaseView, TrucksCol, TruckModel, MapManager) {
+function(BaseView, TrucksView, TrucksCol, TruckModel, MapManager) {
   
   var indexView = BaseView.extend({
 
 	el: '.container',
+
+	trucksView: null,
 
     initialize: function() {
 
@@ -17,9 +19,13 @@ function(BaseView, TrucksCol, TruckModel, MapManager) {
 			map.createMarker({
 			    lat: position.coords.latitude,
 			    lng: position.coords.longitude
-			  });		  	
-			
-    	});    	
+			  });		
+
+			map.setCenter(position.coords.latitude, position.coords.longitude);
+    	});    
+
+		this.trucksView = new TrucksView({collection: this.collection});
+		$("#trucks-list").append(this.trucksView.render().el);
 
     },
 
@@ -38,14 +44,13 @@ function(BaseView, TrucksCol, TruckModel, MapManager) {
 
 		//initial maps options
 		var mapOptions = {
-
 			center: {
 			  lat: 37.791350,
 			  lng: -122.435883
 			},
-			zoom: 12,
+			zoom: 13,
 			disableDefaultUI: false,
-			scrollwheel: true,
+			scrollwheel: false,
 			draggable: true,
 			minZoom: 10
 		};
@@ -60,6 +65,7 @@ function(BaseView, TrucksCol, TruckModel, MapManager) {
 			if (truck.get("lat") && truck.get("lng")){
 
 				var icon = (truck.get("type") === 'Push Cart') ? 'images/pushcart.png' : 'images/truck.png';
+				
 				map.createMarker({
 				    lat: truck.get("lat"),
 				    lng: truck.get("lng"),
