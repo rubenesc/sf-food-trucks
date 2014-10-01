@@ -1,5 +1,5 @@
 
-define(['baseView', 'views/trucks/trucks', 'collections/trucks', 'models/truck', 'utils/MapManager'],
+define(['baseView', 'views/trucks/trucks', 'collections/trucks', 'models/truck', 'utils/mapManager'],
 
 function(BaseView, TrucksView, TrucksCol, TruckModel, MapManager) {
   

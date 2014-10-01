@@ -1,4 +1,4 @@
-define(['utils/googleMapsLoader', 'utils/markerClusterer'],
+define(['utils/googleMapsLoader', 'utils/markerclusterer'],
 
 function(GoogleMapsLoader) {
 
