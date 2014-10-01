@@ -43,13 +43,14 @@ var TruckSchema = new Schema({
 	type: {type:String, trim:true},
 	foodItems: {type:String, trim:true},
 	address: {type:String, trim:true},
-	lng: {type:Number},
-	lat: {type:Number},
+	loc: { type: { type: Number }, coordinates: [] },
 	block: {type:String, trim:true},
     createdDate  : {type : Date, default : Date.now},
     modifiedDate  : {type : Date}
 
 });
+
+TruckSchema.index({ loc: '2d' });
 
 TruckSchema.method('toClient', function() {
 
@@ -106,9 +107,6 @@ TruckSchema.statics = {
 		var criteria = options.criteria || {};
 
 		this.find(criteria)
-			.sort({'createdDate': -1}) //sort by date, -1 (desc) or 1 (asc)
-//			.sort({'title': 'asc'}) //sort by date
-//			.sort({'title': 'asc'}) //sort by date
 		.limit(options.limit)
 			.skip(options.limit * options.page)
 			.exec(cb);

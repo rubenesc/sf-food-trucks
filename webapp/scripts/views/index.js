@@ -1,13 +1,20 @@
 
-define(['baseView', 'collections/trucks', 'models/truck', 'utils/MapManager'],
+define(['baseView', 'views/trucks/trucks', 'collections/trucks', 'models/truck', 'utils/MapManager'],
 
-function(BaseView, TrucksCol, TruckModel, MapManager) {
+function(BaseView, TrucksView, TrucksCol, TruckModel, MapManager) {
   
   var indexView = BaseView.extend({
 
 	el: '.container',
 
+	map: null,
+
+	trucksView: null,
+
     initialize: function() {
+
+		vent.on("truck:locateMarkerOnMap", this.locateMarkerOnMap, this);    	
+		vent.on("truck:locateMarkerOnList", this.locateMarkerOnList, this);    	
 
     	this.createMapAndInitalizeData();
 
@@ -17,9 +24,13 @@ function(BaseView, TrucksCol, TruckModel, MapManager) {
 			map.createMarker({
 			    lat: position.coords.latitude,
 			    lng: position.coords.longitude
-			  });		  	
-			
-    	});    	
+			  });		
+
+			map.setCenter(position.coords.latitude, position.coords.longitude);
+    	});    
+
+		this.trucksView = new TrucksView({collection: this.collection});
+		$("#trucks-list").append(this.trucksView.render().el);
 
     },
 
@@ -38,14 +49,13 @@ function(BaseView, TrucksCol, TruckModel, MapManager) {
 
 		//initial maps options
 		var mapOptions = {
-
 			center: {
 			  lat: 37.791350,
 			  lng: -122.435883
 			},
-			zoom: 12,
+			zoom: 13,
 			disableDefaultUI: false,
-			scrollwheel: true,
+			scrollwheel: false,
 			draggable: true,
 			minZoom: 10
 		};
@@ -57,12 +67,14 @@ function(BaseView, TrucksCol, TruckModel, MapManager) {
 		// add a marker to the map for every truck
 		this.collection.forEach(function(truck){
 
-			if (truck.get("lat") && truck.get("lng")){
+
+			if (truck.get("loc") && truck.get("loc").coordinates && truck.get("loc").coordinates.length === 2){
 
 				var icon = (truck.get("type") === 'Push Cart') ? 'images/pushcart.png' : 'images/truck.png';
+				
 				map.createMarker({
-				    lat: truck.get("lat"),
-				    lng: truck.get("lng"),
+				    lng: truck.get("loc").coordinates[0],
+				    lat: truck.get("loc").coordinates[1],
 				    icon: icon,
 				    content: truck.get("name"),
 				    truckId: truck.get("truckId")
@@ -70,6 +82,28 @@ function(BaseView, TrucksCol, TruckModel, MapManager) {
 			}
 
 		});
+
+  	}, 
+
+  	locateMarkerOnMap: function(item){
+
+  		var found = map.findMarkersBy(function(marker){
+  			return marker.truckId === item.get("truckId");
+  		});
+
+  		found.forEach(function(item){
+  			map.displayInfoWindow(item);
+			map.setCenter(item.get("lat"), item.get("lng"));
+			map.zoom(17);
+  		});
+  	}, 
+
+  	locateMarkerOnList: function(item){
+  		document.getElementById("truck-"+item.get("truckId")).focus();
+
+      	var lng = item.get("lng");
+    	var lat = item.get("lat");
+    	console.log("["+lng+"]["+lat+"]");
 
   	}
 

@@ -12,7 +12,11 @@ function(GoogleMapsLoader) {
       this.markersMap = {}; //keep track of created markers
 
       //create a marker cluster to group truck markers
-      this.markerClusterer = new MarkerClusterer(this.gMap, this.markers);
+      this.markerClusterer = new MarkerClusterer(this.gMap, []);
+
+      google.maps.event.addListener(this.gMap, "click", function(e){
+        console.log(e);
+      });
       
     }
 
@@ -33,7 +37,7 @@ function(GoogleMapsLoader) {
 
         //if it is a truck add it to the cluster
         if (opts.truckId){
-          this.markerClusterer.addMarker(marker);
+          //this.markerClusterer.addMarker(marker);
         }
 
         //if content is denfiend, then attach an info window.
@@ -47,6 +51,9 @@ function(GoogleMapsLoader) {
                 });
             
               infoWindow.open(self.gMap, marker);
+
+              //trigger backbone event.
+              vent.trigger("truck:locateMarkerOnList", marker);
           });
 
         }
@@ -65,6 +72,44 @@ function(GoogleMapsLoader) {
 
         }
       },
+
+      setCenter: function(lat, lon){
+        this.gMap.setCenter(new google.maps.LatLng(lat,lon));
+        this.gMap.setZoom(16);
+      },
+
+      displayInfoWindow: function(marker){
+
+        var infowindow = new google.maps.InfoWindow({
+          content: marker.content
+        });
+
+        infowindow.open(this.gMap, marker);
+      },
+
+      findMarkersBy: function(callback){
+        
+        var matches = [];
+        var cbReturn;
+
+        for (var i=0, l=this.markers.length; i < l; i++){
+          cbReturn = callback(this.markers[i]);
+          if (cbReturn){
+            matches.push(this.markers[i]);
+          }
+        }
+
+        return matches;
+      },
+
+      zoom: function(level) {
+        if (level) {
+          this.gMap.setZoom(level);
+        } else {
+          return this.gMap.getZoom();
+        }
+      }
+
 
     };
 

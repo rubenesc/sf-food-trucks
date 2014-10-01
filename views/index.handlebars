@@ -1,20 +1,32 @@
 
 
-<div class="container text-center full-height">
+<div class="container-fluid">
 
-	<div id="map-canvas"></div>
+		<section>
+
+{{!-- 			<div class="page-header">
+			</div>
+ --}}
+			<div class="row">
+
+				<div class="col-sm-4">
+
+					<div id="trucks-list" class="list-group">
+					</div>
+
+				</div>
+
+				<div class="col-sm-8 mapCont">
+					<div id="map-canvas"></div>
+				</div>
+
+			</div> 
+
+		</section>
 
 </div> 
 
 
-<!-- map script -->
-<!--
-<script src="https://maps.googleapis.com/maps/api/js?sensor=false">
-</script>
--->
 <script src="/scripts/vendor/requirejs/require.js"
 data-main="/scripts/main" type="text/javascript"></script>
-
-{{!-- <script src="/scripts/mapscript.js"></script>
- --}}
 
