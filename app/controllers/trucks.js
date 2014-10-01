@@ -1,15 +1,18 @@
 
 var request = require('request');
 var util = require('util');  
-
+var config = require('../../config/config');
 var mongoose = require('mongoose');
 var Truck = mongoose.model('Truck');
 
 
 exports.fetchListFromAPI = function(req, res, next) {
 
+
+	console.log("truck data api ["+config.truckDataAPI+"]");
+
 	var opts = {
-		url: "http://data.sfgov.org/resource/rqzj-sfat.json",
+		url: config.truckDataAPI,
 	};
 
 	request(opts, function(err, requestRes, body){

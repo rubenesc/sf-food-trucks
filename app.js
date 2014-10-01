@@ -4,7 +4,6 @@
  */
 var express = require('express');
 var fs = require('fs');
-var passport = require('passport');
 var prettyjson = require('prettyjson'); 
 var util = require('util');  
 
@@ -13,7 +12,6 @@ require('express-namespace');
    
 // Load configurations
 var config = require('./config/config');
-var auth = require('./config/middleware/auth/authorization');
 var mongoose = require('mongoose');
 
 //first, checks if it isn't implemented yet
@@ -44,20 +42,18 @@ fs.readdirSync(models_path).forEach(function (file) {
   require(models_path+'/'+file)
 });
 
-// bootstrap passport config
-require('./config/middleware/auth/passport')(passport, config);
 
 //export the app variable, so it can be used in mocha tests.
 var app = module.exports = express();
 
 // express settings
-require('./config/express')(app, config, passport)
+require('./config/express')(app, config)
 
 //Flash messages
 require('./config/middleware/upgrade')(app);
 
 // Bootstrap routes
-require('./config/routes')(app, passport, auth);
+require('./config/routes')(app);
 
 var server = app.listen(app.settings.port, function(){
   util.log(util.format("Express server listening on port: '%d' in '%s' mode", app.settings.port, app.settings.env));
