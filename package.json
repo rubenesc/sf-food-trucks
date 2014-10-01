@@ -2,10 +2,10 @@
   "name": "food-trucks",
   "version": "0.0.1",
   "private": false,
-  "description": "",
+  "description": "sf food truck tracker",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node app.js",
+    "start": "node app.js",
     "test": "NODE_ENV=test ./bin/test",
     "devserver": "NODE_ENV=development ./node_modules/node-dev/node-dev --debug app.js"
   },
@@ -18,24 +18,18 @@
     "express-namespace": "~0.1.1",
     "connect-assets": "~2.3.3",
     "socket.io": "~0.9.13",
-    "validator": "~0.4.19",
-    "express-validator": "~0.3.0",
     "prettyjson": "~0.7.1",
-    "passport": "latest",
-    "passport-local": "latest",
+    "express-validator": "~0.3.0",
     "express3-handlebars": "latest",
-    "connect-roles": "~3.0.3",
     "serve-favicon": "~2.0.1",
     "moment": "~2.7.0",
     "morgan": "~1.1.1",
-    "cache-manager": "~0.8.0",
     "request": "~2.44.0"
   },
   "devDependencies": {
     "node-dev": "~0.2.9",
     "mocha": "~1.7.4",
-    "should": "~1.2.1",
-    "form-data": "~0.1.0"
+    "should": "~1.2.1"
   },
   "author": "",
   "license": "BSD",

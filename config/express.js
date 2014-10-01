@@ -13,7 +13,7 @@ var express = require('express'),
     ApplicationError = require("../app/helpers/applicationErrors");
 
 
-module.exports = function(app, config, passport) {
+module.exports = function(app, config) {
 
   app.configure(function() {
 
@@ -82,10 +82,6 @@ module.exports = function(app, config, passport) {
 
     // connect flash for flash messages
     app.use(flash());
-
-    // use passport session
-    app.use(passport.initialize({ userProperty: 'currentUser' })); //get authenticated user with: req.currentUser
-    app.use(passport.session());   
 
     //compile coffee script or javascript out of an assets directory.
     app.use(require('connect-assets')());
@@ -233,7 +229,3 @@ function logErrors(err, req, res, next) {
   next(err);
 }
 
-// app.configure(function() {
-//   app.set('port', process.env.PORT || 3000);
-//   app.use(app.router);
-// });

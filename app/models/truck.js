@@ -2,40 +2,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-
-/**
- * Getters
- *
- * tags: ["tag1", "tag2", "tag3"]
- *
- * return "tag1,tag2,tag3"
- */
-var getTags = function (tags) {
-  return tags.join(',');
-}
-
-/**
- * Setters
- * 
- *  tags: "tag1,tag2,tag3"  or   ["tag1","tag2","tag3"]
- *      
- */
-var setTags = function (tags) {
-	
-	//Check to see if tags is an array.
-	if( Object.prototype.toString.call( tags ) === '[object Array]' ) {
-		return tags;
-	}
-
-	//conver string to array and trim values;
-	tags = tags.split(','); 
-	tags.forEach(function(value, index){
-  		tags[index] = value.trim();
-  	});
-
-  	return tags;
-}
-
 var TruckSchema = new Schema({
 
 	truckId: {type:String, unique: true, required: true, trim:true},

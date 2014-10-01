@@ -1,6 +1,6 @@
 
 
-module.exports = function(app, passport, auth) {
+module.exports = function(app) {
  
 	app.get("/", function(req, res){
 
@@ -14,7 +14,7 @@ module.exports = function(app, passport, auth) {
 		
 		app.get('/trucks', trucks.list);
 		app.get('/trucks/update', trucks.fetchListFromAPI);
-		
+
 	});
 
 }

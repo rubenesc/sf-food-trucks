@@ -9,7 +9,11 @@ var config =  {
         name: 'Food Trucks: Development'
       },
 
-      db: 'mongodb://localhost/db_food_trucks_dev',
+      truckDataAPI: 'http://data.sfgov.org/resource/rqzj-sfat.json',
+
+      httpPort: 3000,
+
+      db: 'mongodb://localhost/food_trucks_dev',
 
       sessionSecret: 'this_is_a_secret_key'
 
@@ -23,7 +27,11 @@ var config =  {
         name: 'Food Trucks: Testing'
       },
 
-      db: 'mongodb://localhost/db_food_trucks_test',
+      truckDataAPI: 'http://data.sfgov.org/resource/rqzj-sfat.json',
+
+      httpPort: 3001,      
+
+      db: 'mongodb://localhost/food_trucks_test',
 
       sessionSecret: 'this_is_a_secret_key'
 
@@ -37,7 +45,11 @@ var config =  {
         name: 'Food Trucks'
       },
 
-      db: 'mongodb://localhost/db_food_trucks_prd',
+      truckDataAPI: 'http://data.sfgov.org/resource/rqzj-sfat.json',
+
+      httpPort: 3002,      
+
+      db: 'mongodb://localhost/food_trucks_dev',
             
       sessionSecret: 'this_is_a_secret_key'
       
@@ -45,3 +57,6 @@ var config =  {
 }
 
 module.exports = config[process.env.NODE_ENV || 'development'];
+
+
+
