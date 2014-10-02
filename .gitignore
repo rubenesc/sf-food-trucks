@@ -10,4 +10,5 @@ webapp/scripts/vendor
 .sass-cache
 .DS_Store
 test/.DS_Store
+.npm-debug.log
 
