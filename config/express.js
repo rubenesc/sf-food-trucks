@@ -9,7 +9,6 @@ var express = require('express'),
     logger = require('morgan'),
     mongoStore = require('connect-mongo')(express),
     expressValidator = require('express-validator'),
-    ApplicationError = require("../app/helpers/applicationErrors"),
     exphbs  = require('express3-handlebars');
 
 
@@ -161,8 +160,7 @@ function type(type, fn) {
 function logErrors(err, req, res, next) {
 
   //I dont want to log any ValidationErrors
-  if (!(err instanceof ApplicationError.Validation) && 
-        !(err instanceof ApplicationError.ResourceNotFound)){
+  if (err){
 
     if (err.stack){
       util.error("--server error stack --> " + err.stack);
