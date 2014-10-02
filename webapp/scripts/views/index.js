@@ -19,24 +19,7 @@ function(BaseView, TrucksView, TrucksCol, TruckModel, MapManager, GoogleMapsLoad
 		vent.on("truck:locateMarkerOnList", this.locateMarkerOnList, this);    	
 		vent.on("truck:refreshTrucks", this.refreshTrucks, this);    	
 
-    	this.createMap();
-
-    	//set the users current position on the map
-    	var self = this;
-    	map.getCurrentPosition(function(position){
-
-			//if we have a position set a marker	
-			map.createMarker({
-			    lat: position.coords.latitude,
-			    lng: position.coords.longitude
-			  });		
-
-			 map.setCenter(position.coords.latitude, position.coords.longitude);
-
-			 self.findNearByItems({lat: position.coords.latitude, 
-			 						lng: position.coords.longitude});
-
-    	});    
+    	this.createMapAndInitialize();
 
 		this.trucksView = new TrucksView({collection: this.collection});
 		$("#trucks-list").append(this.trucksView.render().el);
@@ -54,7 +37,7 @@ function(BaseView, TrucksView, TrucksCol, TruckModel, MapManager, GoogleMapsLoad
 
   	},
 
-  	createMap: function(){
+  	createMapAndInitialize: function(){
 
 		//initial maps options
 	    var mapOptions = {
@@ -70,11 +53,30 @@ function(BaseView, TrucksView, TrucksCol, TruckModel, MapManager, GoogleMapsLoad
 	    };
 
 	    //Only when the Google Maps is loaded can I use it.
+	    var self = this;
 		GoogleMapsLoader.done(function(){
 			
 			// create the map
 			element = document.getElementById('map-canvas'),
 			map = new MapManager(element, mapOptions);
+
+	    	//set the users current position on the map
+	    	var self_ = self;
+	    	map.getCurrentPosition(function(position){
+
+				//if we have a position set a marker	
+				map.createMarker({
+				    lat: position.coords.latitude,
+				    lng: position.coords.longitude
+				  });		
+
+				 map.setCenter(position.coords.latitude, position.coords.longitude);
+
+				 self_.findNearByItems({lat: position.coords.latitude, 
+				 						lng: position.coords.longitude});
+
+	    	});  
+
 
 		}).fail(function(){ 
 		  console.error("ERROR: Google maps library failed to load");
@@ -107,14 +109,7 @@ function(BaseView, TrucksView, TrucksCol, TruckModel, MapManager, GoogleMapsLoad
 
   	refreshTrucks: function(trucksArr){
 
-
-  		map.removeAllMarkers();
-  		// this.collection = new TrucksCol(trucksArr);
-		
-		while (model = this.collection.first()) {
-		  model.destroy();
-		}
-
+  		//append new markers to the collection and pin them on the map.
 		for (var i = 0; i < trucksArr.length; i++){
 			this.collection.add(new TruckModel(trucksArr[i]));	
 		}

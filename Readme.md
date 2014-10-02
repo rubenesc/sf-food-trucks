@@ -1,39 +1,36 @@
 
-SF Food Trucks is a WebApp that tells a user what food trucks are neer his location.
-
-###Live Demo
-http://107.170.174.64:3000
+##Food-Trucks
 
 ###Description
 
-A user wants to find the food trucks closest to him. Based on HTML5 Geolocation we can find the user's coordinates [latituted and longuitud] and spot him on the map, then we can query all the food trucks that are within a half mile radius to him.
+Food-Trucks is a Web App that shows a user what food trucks are near his location in San Francisco, using data from [Data SF](https://data.sfgov.org/Permitting/Mobile-Food-Facility-Permit/rqzj-sfat). 
 
-To retrieve the list of nearby trucks the front-end will call the back-end trucks api, with a given coordinate. The API will return the list of food trucks orderd by closet distance to the user, so the front-end can dislay add a marker for each truck in the list.
+Based on HTML5 Geolocation it can find the user's coordinates [latitude and longitude] and spot him on the map. With the user's coordinates, the app will trigger an AJAX request to the back-end to query all the food trucks that are around him. If the user moves the map, a new request will be made to retrieve the trucks for the new location. All the information is stored in a NoSql database, that can perform geospatial queries based on a given coordinate and a distance.
 
-Clicking on a marker will display the trucks information, and it will find the trucks info on the left list.
+###Live Demo
+http://ancient-chamber-8416.herokuapp.com/
 
 ###Stack
 
-	Front-end: Backbone 
-		Used Backbone with RequireJS to handle dependency managment
+	Front-end:  
+		Backbone, RequireJS Bootstrap
 
 		code: 
 			/views/index.handlebars
 			/webapp/scripts
 
-	Back-end: Node.js 
+	Back-end: 
+		Node.js Express
 		
 		APIs:
-		Retrieve Food Trucks
 
-		http://domain/api/trucks
-		http://domain/api/trucks?limit=50	
-		http://domain/api/trucks?lat=[latitude]&lon=[longitude]
-		http://domain/api/trucks?lat=[latitude]&lon=[longitude]&radius=[radius]
+		Retrieve Food Trucks from the data base.
+
+			http://domain/api/trucks?lat=[latitude]&lon=[longitude]
 		
-		Populate the database with the list of trucks from the API service. This should be invoked the first time the app is initialzed or whenever there is a need to update all the food trucks information or new food trucks are added.
+		Update the database with the information from the SODA API. 
 
-		http://domain/api/trucks/update
+			http://domain/api/trucks/update
 
 		code: 
 			/config/routes.js
@@ -43,12 +40,22 @@ Clicking on a marker will display the trucks information, and it will find the t
 
 	Database: MongoDB
 
+###Technical Choices
+
+Libraries:
+
+*Backbone to organize and handle all the user interaction dynamically.  
+
+*RequireJS to manage dependencies (Backbone, google API, custom javascript code). Even though it's a small project, it's good to start with a structure.
+
+*NodeJs with Express to create a light-weight REST/JSON API server. Nodejs is fast, and requires a small amount of memory to run.
+
+*MongoDB to store all the records in a local database and have fast access to the data instead of requesting it to the SF Data API (decrease latency). MongoDB also has the capability to execute geospatial queries to find all the records that are near a given coordinate, instead of manually doing a query by coordinates and distance.
+
 
 ###Tests
 
-A series of tests were created using mocha. The tests are amid at at the backend, testing the API and the database CRUD operations.
-
-When a test is executed it runs the application in a "test" enviroment, meaning that that port and database are different than "development" or "production".
+A series of tests were created using "mocha". The tests are aimed at the backend, testing the API and the database CRUD operations. All tests are execute the application in a "test" environment (different database)
 
 ```bash
   $ npm test
@@ -57,14 +64,14 @@ code: /tests
 
 ###Improvements
 
-Based on a time limitation.
-	
-	*Find a food truck by name
-	*Filter food trucks by food items
-	*Full text search
+	*Query food trucks by different a different radius
 	*Error handling to display a proper error message when something comes up
-	*Improve the UI
 	*Create test cases for the front end.
+	*Query food trucks by food items
+	*Find a food truck by name
+	*Full text search
+	*Improve the UI
+	*Add push notifications over websockets in case a truck's location changes.
 
 #### Installation
 ```bash
