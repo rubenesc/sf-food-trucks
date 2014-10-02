@@ -147,23 +147,22 @@ describe("Trucks", function(){
 			// Divs & Fulton
 			var coords = [-122.43822813034058, 37.77687154550712];
 
-			Truck.find({ loc: {
+			var criteria = { loc: {
 					$nearSphere: coords,
-					$maxDistance: 0.01
-				} },
+					$maxDistance: 0.0002
+				} };
 
-				function(err, data){
+			Truck.list({criteria: criteria}, function(err, data){				
 
-					if (err) return done(err);
+				if (err) return done(err);
 
-					data.forEach(function(item){
-						printItem(item, coords);
-					});
+					// data.forEach(function(item){
+					// 	printItem(item, coords);
+					// });
 
-					done();
-					
-				}
-			);
+				done();
+
+			});
 
 		});
 
@@ -182,33 +181,8 @@ describe("Trucks", function(){
 				d = DistanceHelper.getDistanceInKm(lat1, lon1, lat2, lon2);
 			}
 
-			return console.log("["+item.truckId+"]["+item.name+"]["+d+"]"); 
+			return console.log("["+item.truckId+"]["+item.type+"]["+item.name+"]["+d+"]"); 
 		}
-
-
-
-		// it("find truck based on food item", function(done){
-
-		// 	Truck.find(
-		// 		{ $text : { $search : 'Burrito' } }
-
-		// 	  ).exec(function(err, data) {
-
-		// 	  	if (err) return done(err);
-
-		// 	  	console.dir(data);
-
-
-		// 	    // assert.ifError(error);
-		// 	    // assert.equal(2, documents.length);
-		// 	    // assert.equal('text search in mongoose', documents[0].title);
-		// 	    // assert.equal('searching in mongoose', documents[1].title);
-		// 	    // db.close();
-		// 	    done();
-
-		// 	  });
-
-		// });
 
 
 	});

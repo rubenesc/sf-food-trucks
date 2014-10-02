@@ -5,9 +5,9 @@
 var google_maps_loaded_def = null;
  
 define(['jquery'],function($) {
-  
-  if(!google_maps_loaded_def) {
     
+  if(!google_maps_loaded_def) {
+
     google_maps_loaded_def = $.Deferred();
   
     window.google_maps_loaded = function() {
@@ -20,7 +20,7 @@ define(['jquery'],function($) {
     });
     
   }
-  
+
   return google_maps_loaded_def.promise();
   
 });

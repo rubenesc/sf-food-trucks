@@ -11,7 +11,7 @@ define(['baseView', 'text!templates/trucks/truck-list-item.html'],
   	},
 
     initialize: function(){
-      
+      this.model.bind('remove', this.unrender);
     },
 
   	render: function(){
@@ -29,8 +29,8 @@ define(['baseView', 'text!templates/trucks/truck-list-item.html'],
   	},
 
   	unrender: function(){
-		this.unbind();
-  		this.remove();
+		  this.unbind();
+      $(this.el).remove();
   	}
 
   });

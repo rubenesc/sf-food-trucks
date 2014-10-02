@@ -38,17 +38,8 @@ require(['backbone', 'views/index', 'collections/trucks'],
     //helper method to fire events
     window.vent = _.extend({}, Backbone.Events);
 
-    //helper method to find a template
-    window.template = function(id){
-      return _.template($('#'+id).html());
-    }
-
     //initialize Index View
-    var trucks = new TrucksCol();
-
-    trucks.fetch().then(function(){
-        var indexView = new IndexView({collection: trucks});
-    });
+    var indexView = new IndexView({collection: new TrucksCol()});        
 
 });
 

@@ -1,26 +1,55 @@
-define(['utils/googleMapsLoader', 'utils/markerclusterer'],
 
-function(GoogleMapsLoader) {
+define([], function() {
 
   var MapManager = (function() {
 
     function MapManager(element, opts) {
+      
+      //Create a global info window
+      this.infowindow = new google.maps.InfoWindow();
 
       this.gMap = new google.maps.Map(element, opts);
 
       this.markers = []; //keep track of created markers
-      this.markersMap = {}; //keep track of created markers
+      this.currentPosition;
 
-      //create a marker cluster to group truck markers
-      this.markerClusterer = new MarkerClusterer(this.gMap, []);
+      //Add Map Listener when the map is dragged.
+      var self = this;
+      google.maps.event.addListener(this.gMap, "dragend", function(e){
 
-      google.maps.event.addListener(this.gMap, "click", function(e){
-        console.log(e);
+          var c = self.gMap.getCenter();
+          if (c){
+            vent.trigger("map:findNearByItems", {lat: c.lat(), lng: c.lng()});
+          }
+
       });
       
     }
 
     MapManager.prototype = {
+
+      createMarkers: function(trucks){
+
+        // add a marker to the map for every truck
+        var self = this;
+        trucks.forEach(function(truck){
+
+          if (truck.get("loc") && truck.get("loc").coordinates && truck.get("loc").coordinates.length === 2){
+
+            var icon = (truck.get("type") === 'Push Cart') ? 'images/pushcart.png' : 'images/truck.png';
+            
+            self.createMarker({
+                lng: truck.get("loc").coordinates[0],
+                lat: truck.get("loc").coordinates[1],
+                icon: icon,
+                content: truck.get("name"),
+                truckId: truck.get("truckId")
+              });       
+          }
+
+        });
+
+      },
 
       createMarker: function(opts, truck) {
 
@@ -33,11 +62,12 @@ function(GoogleMapsLoader) {
 
         //create the marker
         var marker = new google.maps.Marker(opts);
-        this.markers.push(marker);
-
+        
         //if it is a truck add it to the cluster
         if (opts.truckId){
-          //this.markerClusterer.addMarker(marker);
+          this.markers.push(marker);
+        } else {
+          this.currentPosition = marker;
         }
 
         //if content is denfiend, then attach an info window.
@@ -46,14 +76,10 @@ function(GoogleMapsLoader) {
           var self = this;
           google.maps.event.addListener(marker, "click", function() {
 
-                var infoWindow = new google.maps.InfoWindow({
-                    content: opts.content
-                });
-            
-              infoWindow.open(self.gMap, marker);
-
+              self.displayInfoWindow(marker);
               //trigger backbone event.
               vent.trigger("truck:locateMarkerOnList", marker);
+
           });
 
         }
@@ -64,27 +90,30 @@ function(GoogleMapsLoader) {
       getCurrentPosition: function(callback) {
 
         if (navigator.geolocation) {
-        
+          
           navigator.geolocation.getCurrentPosition(function(position) {
-            // callback(position);
+            
             callback.call(this, position);
+
           });
 
+        } else {
+            //return with no position
+            callback.call(this);
         }
+
       },
 
       setCenter: function(lat, lon){
         this.gMap.setCenter(new google.maps.LatLng(lat,lon));
-        this.gMap.setZoom(16);
+        this.gMap.setZoom(15);
       },
 
       displayInfoWindow: function(marker){
 
-        var infowindow = new google.maps.InfoWindow({
-          content: marker.content
-        });
-
-        infowindow.open(this.gMap, marker);
+        this.infowindow.close(); //close any open window.
+        this.infowindow.setContent(marker.content);
+        this.infowindow.open(this.gMap, marker); //open the new one
       },
 
       findMarkersBy: function(callback){
@@ -108,6 +137,10 @@ function(GoogleMapsLoader) {
         } else {
           return this.gMap.getZoom();
         }
+      },
+
+      removeAllMarkers: function(){
+        this.markers.length = 0;
       }
 
 

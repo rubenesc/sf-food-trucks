@@ -95,72 +95,25 @@ module.exports = function(app, config) {
     //handle errors
   app.use(function(err, req, res, next) {
 
-      if (err instanceof ApplicationError.Validation){
-        //Bad Request: 400 
-
-        //Send the user back to the requested page, with an error message
-        if (err.message){
-          req.flash('info', err.message);
-        } else {
-          req.flash('error', "An unexpected error ocurred. Please try again.");
-        }
-
-        if (err.errors){
-          req.flash('error', err.errors);
-        }
-
-        if (err.url){
-          return res.redirect(err.url);
-        }
-
-        return res.redirect(req.url);
-      }  
-
-      if (err instanceof ApplicationError.ResourceNotFound){
-        // return res.send(404, {error: err} );
-        return res.render('404', {error: err});
-      }  
-
-      //if it has a message then it was a costume error
-      if (err.message){
-
-        var errorObj = { message: err.message, code: err.code};
-        // return res.send(err.status?err.status:'500', {error: errorObj} );
-        return res.render('500', {error: errorObj});
+      if (err) {
+        return res.send('500', {error: err});
       }
 
-      // if it has stack then something went really bad
-      if (err.stack){
-
-        return res.render('500', {error: 'Internal Server Error'});
-        // return res.send('500', {
-        //   error: 'Internal Server Error'
-        // });
-      }
-    
       //the next handler is the 404.
       next();
 
-    });
+  });
 
-    // assume 404 since no middleware responded
-    app.use(function(req, res, next) {
+  // assume 404 since no middleware responded
+  app.use(function(req, res, next) {
 
-      var isApi = true;
-
-      if (isApi) {
-        res.send('404', {
-          message: "not found ...",
-          url: req.url
-        });
-      } else {
-        return res.render('404', {
-          message: "not found ...",
-          url: req.url
-        });
-      }
+      return res.render('404', {
+        message: "not found ...",
+        url: req.url
+      });
 
     });
+
   });
 
   app.configure('development', function() {

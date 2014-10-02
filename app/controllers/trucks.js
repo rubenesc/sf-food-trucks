@@ -8,9 +8,6 @@ var Truck = mongoose.model('Truck');
 
 exports.fetchListFromAPI = function(req, res, next) {
 
-
-	console.log("truck data api ["+config.truckDataAPI+"]");
-
 	var opts = {
 		url: config.truckDataAPI,
 	};
@@ -104,8 +101,13 @@ function retrieveListOptions(req){
 	}	
 
 	if (req.param('lat') && req.param('lon')){
-		criteria.lat = req.param('lat');		
-		criteria.lon = req.param('lon');		
+
+		var coords = [ parseFloat(req.param('lon')), 
+						parseFloat(req.param('lat')) ];
+
+		criteria.loc = { $nearSphere: coords, 
+						  $maxDistance: 0.0001
+						};
 	}	
 
 	return {
