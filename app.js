@@ -49,15 +49,9 @@ var app = module.exports = express();
 // express settings
 require('./config/express')(app, config)
 
-//Flash messages
-require('./config/middleware/upgrade')(app);
-
 // Bootstrap routes
 require('./config/routes')(app);
 
 var server = app.listen(app.settings.port, function(){
   util.log(util.format("Express server listening on port: '%d' in '%s' mode", app.settings.port, app.settings.env));
 });
-
-// Express 3.0 returns the server after the call to `listen`.
-require('./app/socket-io')(app, server);

@@ -8,9 +8,9 @@ var express = require('express'),
     util = require('util'),
     logger = require('morgan'),
     mongoStore = require('connect-mongo')(express),
-    viewHelpers = require('./middleware/view'),
     expressValidator = require('express-validator'),
-    ApplicationError = require("../app/helpers/applicationErrors");
+    ApplicationError = require("../app/helpers/applicationErrors"),
+    exphbs  = require('express3-handlebars');
 
 
 module.exports = function(app, config) {
@@ -40,8 +40,7 @@ module.exports = function(app, config) {
    app.use(favicon(__dirname + '/../webapp/images/favicon.ico'));
 
     //handlebars
-    var hbs = require('./middleware/handlebars/hbs-helper')();
-    app.engine('handlebars', hbs.engine);
+    app.engine('handlebars', exphbs({defaultLayout: 'main'}));
     
     //app.set('views', config.root + '/app/views');
     app.set('view engine', 'handlebars');
@@ -52,10 +51,6 @@ module.exports = function(app, config) {
     } else {
         app.use(logger('dev'));
     }
-
-
-    // dynamic helpers
-    app.use(viewHelpers(config));
 
     // limit the size of the request body depending on the content type.
     app.use(type('application/x-www-form-urlencoded', express.limit('64kb')));
