@@ -13,14 +13,14 @@ http://ancient-chamber-8416.herokuapp.com/
 ###Stack
 
 	Front-end:  
-		Backbone, RequireJS Bootstrap
+		Backbone, RequireJS, Bootstrap
 
 		code: 
 			/views/index.handlebars
 			/webapp/scripts
 
 	Back-end: 
-		Node.js Express
+		Node.js, Express
 		
 		APIs:
 
@@ -28,7 +28,7 @@ http://ancient-chamber-8416.herokuapp.com/
 
 			http://domain/api/trucks?lat=[latitude]&lon=[longitude]
 		
-		Update the database with the information from the SODA API. 
+		Update the database with the information from the SODA API(SF Data). 
 
 			http://domain/api/trucks/update
 
@@ -48,14 +48,14 @@ Libraries:
 
 *RequireJS to manage dependencies (Backbone, google API, custom javascript code). Even though it's a small project, it's good to start with a structure.
 
-*NodeJs with Express to create a light-weight REST/JSON API server. Nodejs is fast, and requires a small amount of memory to run.
+*NodeJs with Express to create a light-weight REST/JSON API server. NodeJs is fast, and requires a small amount of memory to run.
 
 *MongoDB to store all the records in a local database and have fast access to the data instead of requesting it to the SF Data API (decrease latency). MongoDB also has the capability to execute geospatial queries to find all the records that are near a given coordinate, instead of manually doing a query by coordinates and distance.
 
 
 ###Tests
 
-A series of tests were created using "mocha". The tests are aimed at the backend, testing the API and the database CRUD operations. All tests are execute the application in a "test" environment (different database)
+A series of tests were created using "mocha". The tests are aimed at the backend, testing the API and the database CRUD operations. All tests execute the application in a "test" environment (different database)
 
 ```bash
   $ npm test
